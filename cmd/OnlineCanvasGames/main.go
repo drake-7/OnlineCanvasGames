@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/1001bit/OnlineCanvasGames/internal/router"
+	"github.com/1001bit/OnlineCanvasGames/api/router"
 )
 
 func main() {
@@ -12,7 +13,5 @@ func main() {
 	port := 8080
 	addr := fmt.Sprintf(":%d", port)
 	fmt.Printf("Listening on localhost%s\n", addr)
-	if err := http.ListenAndServe(addr, router); err != nil {
-		panic(err)
-	}
+	log.Fatal(http.ListenAndServe(addr, router))
 }
