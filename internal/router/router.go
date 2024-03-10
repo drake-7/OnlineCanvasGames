@@ -9,7 +9,7 @@ import (
 func NewRouter() http.Handler {
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/login", authapi.AuthPage)
+	mux.HandleFunc("/auth", authapi.AuthPage)
 
 	return mux
 }

@@ -1,7 +1,11 @@
 package authapi
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
+)
 
 func AuthPage(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("auth page"))
+	tmplloader.Templates.ExecuteTemplate(w, "auth.html", nil)
 }
