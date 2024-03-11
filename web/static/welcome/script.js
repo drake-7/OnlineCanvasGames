@@ -10,7 +10,7 @@ function postInput(type){
         type: type
     }
 
-    fetch ("/api/welcome", {
+    fetch ("/api/userauth", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

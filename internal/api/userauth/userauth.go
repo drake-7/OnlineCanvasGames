@@ -1,4 +1,4 @@
-package welcomeapi
+package userauthapi
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ type WelcomeUserInput struct {
 	Type     string `json:"type"`
 }
 
-func WelcomePost(w http.ResponseWriter, r *http.Request) {
+func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "post only", http.StatusMethodNotAllowed)
 		return
