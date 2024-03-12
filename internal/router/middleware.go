@@ -8,7 +8,38 @@ import (
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
 )
 
+// check JWT for any handler
 func AuthMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// get token from cookie
+		cookie, err := r.Cookie("jwt")
+		if err != nil {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		tokenString := cookie.Value
+
+		// get token claims
+		claims, err := auth.GetJWTClaims(tokenString)
+		if err != nil {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		// check token expiry
+		expTime, err := claims.GetExpirationTime()
+		if err != nil || time.Now().Unix() > expTime.Unix() {
+			http.Error(w, "unauthorized", http.StatusUnauthorized)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
+
+// check JWT for HTML handlers
+func AuthMiddlewareHTML(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// get token from cookie
 		cookie, err := r.Cookie("jwt")

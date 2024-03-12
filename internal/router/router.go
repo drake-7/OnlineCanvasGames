@@ -14,8 +14,12 @@ func NewRouter() http.Handler {
 	mux.HandleFunc("/api/userauth", userauthapi.UserAuthPost)
 
 	// home
-	homeHandler := http.HandlerFunc(homeapi.HomePage)
-	mux.HandleFunc("/", AuthMiddleware(homeHandler).ServeHTTP)
+	mux.HandleFunc("/", AuthMiddlewareHTML(homeapi.HomePage))
+
+	// test data for authorized ones
+	mux.Handle("/some", AuthMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("data"))
+	})))
 
 	// static
 	staticFileServer := http.FileServer(http.Dir("./web/static/"))
