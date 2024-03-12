@@ -30,18 +30,18 @@ func CreateJWT(userID string) (string, error) {
 	return tokenStr, nil
 }
 
-func VerifyJWT(tokenString string) error {
+func GetJWTClaims(tokenString string) (jwt.MapClaims, error) {
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		return secret, nil
 	})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	if !token.Valid {
-		return ErrBadToken
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		return claims, nil
 	}
 
-	return nil
+	return nil, ErrBadToken
 }
