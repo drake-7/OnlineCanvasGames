@@ -16,7 +16,7 @@ func NewRouter() http.Handler {
 	// home
 	mux.HandleFunc("/", AuthMiddlewareHTML(homeapi.HomePage))
 
-	// test data for authorized ones
+	// TEST CASE
 	mux.Handle("/some", AuthMiddleware(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("data"))
 	})))
