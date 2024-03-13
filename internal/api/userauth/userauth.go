@@ -2,10 +2,16 @@ package userauthapi
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"regexp"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
+)
+
+var (
+	ErrNoUser     = fmt.Errorf("incorrect username or password")
+	ErrUserExists = fmt.Errorf("user with such name already exists")
 )
 
 type WelcomeUserInput struct {
@@ -48,19 +54,24 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Login / register
+	var userID string
 	if userInput.Type == "login" {
-		err = login(w, userInput)
+		userID, err = login(userInput)
 	} else {
-		err = register(w, userInput)
+		userID, err = register(userInput)
 	}
 
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusUnauthorized)
+		if err == ErrNoUser || err == ErrUserExists {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+		http.Error(w, "server error", http.StatusInternalServerError)
 		return
 	}
 
 	// set token cookie
-	token, err := auth.CreateJWT("123")
+	token, err := auth.CreateJWT(userID)
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError)
 		return

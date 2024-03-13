@@ -1,15 +1,24 @@
 package userauthapi
 
 import (
-	"fmt"
-	"net/http"
+	"database/sql"
+
+	"github.com/1001bit/OnlineCanvasGames/internal/auth"
+	"github.com/1001bit/OnlineCanvasGames/internal/database"
 )
 
-func login(w http.ResponseWriter, userInput WelcomeUserInput) error {
-	// TODO: DATABASE
-	if false {
-		return fmt.Errorf("%s doesn't exist", userInput.Username)
+func login(userInput WelcomeUserInput) (string, error) {
+	// check user existance
+	var hash, id string
+	err := database.Statements["getHashAndId"].QueryRow(userInput.Username).Scan(&hash, &id)
+
+	if err == sql.ErrNoRows || !auth.CheckHash(userInput.Password, hash) {
+		return "", ErrNoUser
 	}
 
-	return nil
+	if err != nil {
+		return "", err
+	}
+
+	return id, err
 }
