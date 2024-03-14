@@ -3,6 +3,7 @@ package userauthapi
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"regexp"
 
@@ -62,11 +63,15 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		if err == ErrNoUser || err == ErrUserExists {
-			http.Error(w, err.Error(), http.StatusUnauthorized)
-			return
+		switch err {
+		case ErrNoUser:
+			http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
+		case ErrUserExists:
+			http.Error(w, fmt.Sprintf("%s already exists", userInput.Username), http.StatusUnauthorized)
+		default:
+			http.Error(w, "server error", http.StatusInternalServerError)
+			log.Println("login/register err:", err)
 		}
-		http.Error(w, "server error", http.StatusInternalServerError)
 		return
 	}
 
@@ -74,6 +79,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	token, err := auth.CreateJWT(userID)
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError)
+		log.Println("jwt creation err:", err)
 		return
 	}
 
