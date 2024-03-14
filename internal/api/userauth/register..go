@@ -5,30 +5,31 @@ import (
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 )
 
-func register(userInput WelcomeUserInput) (string, error) {
+func register(userInput WelcomeUserInput) (auth.UserData, error) {
+	userData := auth.UserData{Name: userInput.Username}
+
 	// check user existance
 	var exists bool
 
 	err := database.Statements["userExists"].QueryRow(userInput.Username).Scan(&exists)
 	if err != nil {
-		return "", err
+		return auth.UserData{}, err
 	}
 
 	if exists {
-		return "", ErrUserExists
+		return auth.UserData{}, ErrUserExists
 	}
 
 	// create new user
 	hash, err := auth.GenerateHash(userInput.Password)
 	if err != nil {
-		return "", err
+		return auth.UserData{}, err
 	}
 
-	var userID string
-	err = database.Statements["register"].QueryRow(userInput.Username, hash).Scan(&userID)
+	err = database.Statements["register"].QueryRow(userInput.Username, hash).Scan(&userData.ID)
 	if err != nil {
-		return "", err
+		return auth.UserData{}, err
 	}
 
-	return userID, nil
+	return auth.UserData{}, nil
 }

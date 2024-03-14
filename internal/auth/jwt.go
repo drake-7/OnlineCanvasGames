@@ -13,12 +13,18 @@ var (
 	ErrBadToken = fmt.Errorf("invalid token")
 )
 
-func CreateJWT(userID string) (string, error) {
+type UserData struct {
+	ID   string
+	Name string
+}
+
+func CreateJWT(userData UserData) (string, error) {
 	token := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"userID": userID,
-			"exp":    time.Now().Add(JWTLifeTime).Unix(),
+			"userID":   userData.ID,
+			"username": userData.Name,
+			"exp":      time.Now().Add(JWTLifeTime).Unix(),
 		},
 	)
 

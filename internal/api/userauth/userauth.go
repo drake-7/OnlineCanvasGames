@@ -55,11 +55,11 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Login / register
-	var userID string
+	var userData auth.UserData
 	if userInput.Type == "login" {
-		userID, err = login(userInput)
+		userData, err = login(userInput)
 	} else {
-		userID, err = register(userInput)
+		userData, err = register(userInput)
 	}
 
 	if err != nil {
@@ -76,7 +76,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// set token cookie
-	token, err := auth.CreateJWT(userID)
+	token, err := auth.CreateJWT(userData)
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError)
 		log.Println("jwt creation err:", err)
