@@ -14,8 +14,25 @@ body {
     margin: 0;
     padding: 7px;
     color: rgb(230, 230, 230);
-    padding-top: 50px;
     overflow-x: hidden;
+}
+
+/* ELEMS */
+
+h1 {
+    margin-top: 0;
+}
+
+a {
+    color: #5fb963;
+}
+
+p {
+    margin-block: 5px;
+}
+
+.nowrap {
+    flex-wrap: nowrap;
 }
 
 /* BUTTON */
@@ -38,16 +55,11 @@ body {
     background-color: #4aac4d;
 }
 
-/* button configurations */
-
-.style-button.small {
-    padding: 5px;
-}
-
 .style-button.physical {
     transition: transform 0.027s;
     box-shadow: 0 5px #1a1a1a;
     transform: translateY(-4px);
+    margin-top: 8px;
 }
 
 .style-button.physical:active {
@@ -55,20 +67,21 @@ body {
     transform: translateY(1px);
 }
 
+/* small */
+
+.style-button.small {
+    padding: 5px;
+}
+
 .style-button.small.physical {
     box-shadow: 0 3px #1a1a1a;
     transform: translateY(-2px);
+    margin-top: 6px;
 }
 
 .style-button.small.physical:active {
     box-shadow: 0 0px #000;
     transform: translateY(1px);
-}
-
-/* a LINK */
-
-a {
-    color: #5fb963;
 }
 
 /* CARD */
@@ -77,10 +90,6 @@ a {
     display: flex;
     flex-wrap: wrap;
     gap: 28px;
-}
-
-.nowrap {
-    flex-wrap: nowrap;
 }
 
 .card {
@@ -94,6 +103,10 @@ a {
     align-items: center;
     padding: 5px;
     box-shadow: 0px 3px 5px #000000;
+}
+
+.card .style-button {
+    width: 100%;
 }
 
 /* IMAGE HOLDER */
