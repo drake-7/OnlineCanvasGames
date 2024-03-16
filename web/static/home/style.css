@@ -1,0 +1,22 @@
+.card-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 7px;
+    font-size: 16px;
+    font-weight: 600;
+    background-color:var(--sec-elem-color);
+    word-wrap: break-word;
+    align-items: center;
+    padding: 5px;
+    box-shadow: 0px 3px 5px #000000;
+}
+
+.card .style-button {
+    width: 100%;
+}

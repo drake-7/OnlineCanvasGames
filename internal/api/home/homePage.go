@@ -8,8 +8,13 @@ import (
 	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
+type Game struct {
+	Title string
+}
+
 type HomeData struct {
-	Name string
+	Name  string
+	Games []Game
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
@@ -20,6 +25,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	data := HomeData{}
 
+	// get name from jwt
 	cookie, err := r.Cookie("jwt")
 	if err != nil {
 		http.Error(w, "unauthorized", http.StatusUnauthorized)
@@ -32,6 +38,9 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data.Name = fmt.Sprint(claims["username"])
+
+	// games count
+	data.Games = append(data.Games, Game{Title: "funny game"})
 
 	tmplloader.Templates.ExecuteTemplate(w, "home.html", data)
 }
