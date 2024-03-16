@@ -5,7 +5,7 @@ import (
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 )
 
-func register(userInput WelcomeUserInput) (auth.UserData, error) {
+func register(userInput *WelcomeUserInput) (auth.UserData, error) {
 	userData := auth.UserData{Name: userInput.Username}
 
 	// check user existance
@@ -21,7 +21,7 @@ func register(userInput WelcomeUserInput) (auth.UserData, error) {
 	}
 
 	// create new user
-	hash, err := auth.GenerateHash(userInput.Password)
+	hash, err := auth.GenerateHash(&userInput.Password)
 	if err != nil {
 		return auth.UserData{}, err
 	}

@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/1001bit/OnlineCanvasGames/internal/env"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 var (
-	secret      = []byte("secret")
-	JWTLifeTime = time.Hour * 24
-	ErrBadToken = fmt.Errorf("invalid token")
+	secret      []byte = nil
+	JWTLifeTime        = time.Hour * 24
+	ErrBadToken        = fmt.Errorf("invalid token")
 )
 
 type UserData struct {
@@ -18,7 +19,11 @@ type UserData struct {
 	Name string
 }
 
-func CreateJWT(userData UserData) (string, error) {
+func InitJWTSecret() {
+	secret = []byte(env.GetEnv("JWT_SECRET"))
+}
+
+func CreateJWT(userData *UserData) (string, error) {
 	token := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
 		jwt.MapClaims{
@@ -36,8 +41,8 @@ func CreateJWT(userData UserData) (string, error) {
 	return tokenStr, nil
 }
 
-func GetJWTClaims(tokenString string) (jwt.MapClaims, error) {
-	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+func GetJWTClaims(tokenString *string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(*tokenString, func(t *jwt.Token) (interface{}, error) {
 		return secret, nil
 	})
 

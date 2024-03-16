@@ -26,7 +26,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	claims, err := auth.GetJWTClaims(cookie.Value)
+	claims, err := auth.GetJWTClaims(&cookie.Value)
 	if err != nil {
 		http.Error(w, "bad token", http.StatusUnauthorized)
 	}

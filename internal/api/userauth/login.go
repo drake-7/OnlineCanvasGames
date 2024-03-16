@@ -7,14 +7,14 @@ import (
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 )
 
-func login(userInput WelcomeUserInput) (auth.UserData, error) {
+func login(userInput *WelcomeUserInput) (auth.UserData, error) {
 	userData := auth.UserData{Name: userInput.Username}
 
 	// check user existance
 	var hash string
 	err := database.Statements["getHashAndId"].QueryRow(userInput.Username).Scan(&hash, &userData.ID)
 
-	if err == sql.ErrNoRows || !auth.CheckHash(userInput.Password, hash) {
+	if err == sql.ErrNoRows || !auth.CheckHash(&userInput.Password, &hash) {
 		return auth.UserData{}, ErrNoUser
 	}
 

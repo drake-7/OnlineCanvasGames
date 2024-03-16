@@ -18,10 +18,8 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		tokenString := cookie.Value
-
 		// get token claims
-		claims, err := auth.GetJWTClaims(tokenString)
+		claims, err := auth.GetJWTClaims(&cookie.Value)
 		if err != nil {
 			http.Error(w, "unauthorized", http.StatusUnauthorized)
 			return
@@ -48,10 +46,8 @@ func AuthMiddlewareHTML(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		tokenString := cookie.Value
-
 		// get token claims
-		claims, err := auth.GetJWTClaims(tokenString)
+		claims, err := auth.GetJWTClaims(&cookie.Value)
 		if err != nil {
 			welcomeapi.WelcomePage(w, r)
 			return

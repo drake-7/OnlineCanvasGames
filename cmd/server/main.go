@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/1001bit/OnlineCanvasGames/internal/auth"
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 	"github.com/1001bit/OnlineCanvasGames/internal/env"
 	"github.com/1001bit/OnlineCanvasGames/internal/router"
@@ -19,6 +20,9 @@ func init() {
 		log.Fatal(err)
 	}
 	database.InitStatements()
+
+	// init JWT
+	auth.InitJWTSecret()
 }
 
 func main() {
