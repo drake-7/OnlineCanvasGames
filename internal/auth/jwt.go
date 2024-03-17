@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/env"
+	"github.com/1001bit/OnlineCanvasGames/internal/model"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -14,16 +15,11 @@ var (
 	ErrBadToken        = fmt.Errorf("invalid token")
 )
 
-type UserData struct {
-	ID   string
-	Name string
-}
-
 func InitJWTSecret() {
 	secret = []byte(env.GetEnv("JWT_SECRET"))
 }
 
-func CreateJWT(userData *UserData) (string, error) {
+func CreateJWT(userData *model.User) (string, error) {
 	token := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
 		jwt.MapClaims{

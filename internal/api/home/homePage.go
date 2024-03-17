@@ -2,19 +2,41 @@ package homeapi
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
+	"github.com/1001bit/OnlineCanvasGames/internal/database"
+	"github.com/1001bit/OnlineCanvasGames/internal/model"
 	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
-type Game struct {
-	Title string
-}
-
 type HomeData struct {
 	Name  string
-	Games []Game
+	Games []model.Game
+}
+
+func getGames() ([]model.Game, error) {
+	rows, err := database.Statements["getGames"].Query()
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var games []model.Game
+
+	for rows.Next() {
+		var game model.Game
+
+		err := rows.Scan(&game.ID, &game.Title)
+		if err != nil {
+			return nil, err
+		}
+
+		games = append(games, game)
+	}
+
+	return games, nil
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
@@ -40,7 +62,11 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	data.Name = fmt.Sprint(claims["username"])
 
 	// games count
-	data.Games = append(data.Games, Game{Title: "funny game"})
+	data.Games, err = getGames()
+	if err != nil {
+		data.Games = nil
+		log.Println("error getting games:", err)
+	}
 
 	tmplloader.Templates.ExecuteTemplate(w, "home.html", data)
 }

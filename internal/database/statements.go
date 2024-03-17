@@ -21,4 +21,8 @@ func InitStatements() {
 	prepareStatement("userExists", "SELECT EXISTS(SELECT 1 FROM users WHERE name = $1)")
 	// hash and user id
 	prepareStatement("getHashAndId", "SELECT hash, id FROM users WHERE name = $1")
+
+	// GAMES
+	// full list
+	prepareStatement("getGames", "SELECT id, title FROM games")
 }

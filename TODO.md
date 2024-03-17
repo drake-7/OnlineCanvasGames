@@ -1,8 +1,10 @@
-- [ ] Home page
+- [X] Home page
     - [X] Frontend
-    - [ ] Backend
+    - [X] Backend
 
-- [ ] Database storage for games
+- [X] Database storage for games
+
+- [ ] Some system for containing games, users and models
 
 - [ ] Game page
     - [ ] Frontend

@@ -8,6 +8,7 @@ import (
 	"regexp"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
+	"github.com/1001bit/OnlineCanvasGames/internal/model"
 )
 
 var (
@@ -55,7 +56,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Login / register
-	var userData auth.UserData
+	var userData model.User
 	if userInput.Type == "login" {
 		userData, err = login(&userInput)
 	} else {
