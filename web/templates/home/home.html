@@ -9,7 +9,7 @@
 </head>
 <body>
     <h1>Welcome back, {{ .Name }}!</h1>
-    <h2>Available online games {{ len .Games }}:</h2>
+    <h2>Available online games ({{ len .Games }}):</h2>
     <div class="card-group">
         {{ range .Games }}
         <div class="card">
