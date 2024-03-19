@@ -1,41 +1,21 @@
 package userauthapi
 
 import (
-	"github.com/1001bit/OnlineCanvasGames/internal/auth"
-	"github.com/1001bit/OnlineCanvasGames/internal/database"
-	"github.com/1001bit/OnlineCanvasGames/internal/model"
+	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
-func register(userInput *WelcomeUserInput) (*model.User, error) {
-	userData := &model.User{Name: userInput.Username}
-
+func register(userInput *WelcomeUserInput) (*usermodel.User, error) {
 	// check user existance
-	var exists bool
-
-	stmt, err := database.DB.GetStatement("userExist")
+	exists, err := usermodel.NameExists(&userInput.Username)
 	if err != nil {
 		return nil, err
 	}
-	err = stmt.QueryRow(userInput.Username).Scan(&exists)
-	if err != nil {
-		return nil, err
-	}
-
 	if exists {
 		return nil, ErrUserExists
 	}
 
 	// create new user
-	hash, err := auth.GenerateHash(&userInput.Password)
-	if err != nil {
-		return nil, err
-	}
-
-	stmt, err = database.DB.GetStatement("register")
-	if err != nil {
-		return nil, err
-	}
-	err = stmt.QueryRow(userInput.Username, hash).Scan(&userData.ID)
+	userData, err := usermodel.Insert(&userInput.Username, &userInput.Password)
 	if err != nil {
 		return nil, err
 	}

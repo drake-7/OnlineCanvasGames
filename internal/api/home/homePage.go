@@ -6,42 +6,13 @@ import (
 	"net/http"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
-	"github.com/1001bit/OnlineCanvasGames/internal/database"
-	"github.com/1001bit/OnlineCanvasGames/internal/model"
+	gamemodel "github.com/1001bit/OnlineCanvasGames/internal/model/game"
 	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
 type HomeData struct {
 	Name  string
-	Games []model.Game
-}
-
-func getGames() ([]model.Game, error) {
-	stmt, err := database.DB.GetStatement("getGames")
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := stmt.Query()
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var games []model.Game
-
-	for rows.Next() {
-		var game model.Game
-
-		err := rows.Scan(&game.ID, &game.Title)
-		if err != nil {
-			return nil, err
-		}
-
-		games = append(games, game)
-	}
-
-	return games, nil
+	Games []gamemodel.Game
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
@@ -67,7 +38,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	data.Name = fmt.Sprint(claims["username"])
 
 	// games count
-	data.Games, err = getGames()
+	data.Games, err = gamemodel.All()
 	if err != nil {
 		data.Games = nil
 		log.Println("error getting games:", err)

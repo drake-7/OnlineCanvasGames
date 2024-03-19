@@ -9,7 +9,7 @@ import (
 	"regexp"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
-	"github.com/1001bit/OnlineCanvasGames/internal/model"
+	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
 var (
@@ -57,11 +57,11 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Login / register
-	var userData *model.User
+	var user *usermodel.User
 	if userInput.Type == "login" {
-		userData, err = login(&userInput)
+		user, err = login(&userInput)
 	} else {
-		userData, err = register(&userInput)
+		user, err = register(&userInput)
 	}
 
 	if err != nil {
@@ -78,7 +78,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// set token cookie
-	token, err := auth.CreateJWT(userData)
+	token, err := auth.CreateJWT(user.ID, user.Name)
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError)
 		log.Println("jwt creation err:", err)

@@ -3,29 +3,23 @@ package userauthapi
 import (
 	"database/sql"
 
-	"github.com/1001bit/OnlineCanvasGames/internal/auth"
-	"github.com/1001bit/OnlineCanvasGames/internal/database"
-	"github.com/1001bit/OnlineCanvasGames/internal/model"
+	"github.com/1001bit/OnlineCanvasGames/internal/crypt"
+	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
-func login(userInput *WelcomeUserInput) (*model.User, error) {
-	userData := &model.User{Name: userInput.Username}
+func login(userInput *WelcomeUserInput) (*usermodel.User, error) {
+	user, hash, err := usermodel.GetUserAndHash(&userInput.Username)
 
-	// check user existance
-	var hash string
-	stmt, err := database.DB.GetStatement("getHashAndId")
 	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, ErrNoUser
+		}
 		return nil, err
 	}
-	err = stmt.QueryRow(userInput.Username).Scan(&hash, &userData.ID)
 
-	if err == sql.ErrNoRows || !auth.CheckHash(&userInput.Password, &hash) {
+	if !crypt.CheckHash(&userInput.Password, hash) {
 		return nil, ErrNoUser
 	}
 
-	if err != nil {
-		return nil, err
-	}
-
-	return userData, err
+	return user, nil
 }

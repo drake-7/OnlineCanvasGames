@@ -7,7 +7,7 @@ func (database *Database) InitStatements() {
 	// user existance
 	database.prepareStatement("userExists", "SELECT EXISTS(SELECT 1 FROM users WHERE name = $1)")
 	// hash and user id
-	database.prepareStatement("getHashAndId", "SELECT hash, id FROM users WHERE name = $1")
+	database.prepareStatement("getUserAndHash", "SELECT id, hash FROM users WHERE name = $1")
 
 	// GAMES
 	// full list
