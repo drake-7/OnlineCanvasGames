@@ -17,7 +17,12 @@ type HomeData struct {
 }
 
 func getGames() ([]model.Game, error) {
-	rows, err := database.Statements["getGames"].Query()
+	stmt, err := database.DB.GetStatement("getGames")
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := stmt.Query()
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,7 @@
 package auth
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/env"
@@ -12,7 +12,7 @@ import (
 var (
 	secret      []byte = nil
 	JWTLifeTime        = time.Hour * 24
-	ErrBadToken        = fmt.Errorf("invalid token")
+	ErrBadToken        = errors.New("invalid token")
 )
 
 func InitJWTSecret() {

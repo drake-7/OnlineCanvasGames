@@ -2,6 +2,7 @@ package userauthapi
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,8 +13,8 @@ import (
 )
 
 var (
-	ErrNoUser     = fmt.Errorf("incorrect username or password")
-	ErrUserExists = fmt.Errorf("user with such name already exists")
+	ErrNoUser     = errors.New("incorrect username or password")
+	ErrUserExists = errors.New("user with such name already exists")
 )
 
 type WelcomeUserInput struct {
@@ -56,7 +57,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Login / register
-	var userData model.User
+	var userData *model.User
 	if userInput.Type == "login" {
 		userData, err = login(&userInput)
 	} else {
@@ -77,7 +78,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// set token cookie
-	token, err := auth.CreateJWT(&userData)
+	token, err := auth.CreateJWT(userData)
 	if err != nil {
 		http.Error(w, "server error", http.StatusInternalServerError)
 		log.Println("jwt creation err:", err)

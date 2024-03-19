@@ -13,21 +13,18 @@ import (
 
 func init() {
 	env.InitEnv()
-
-	// init database
-	err := database.InitDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	database.InitStatements()
-
-	// init JWT
 	auth.InitJWTSecret()
+	database.DB = &database.Database{}
 }
 
 func main() {
-	// close database on end
-	defer database.Database.Close()
+	// init database
+	err := database.DB.Start()
+	if err != nil {
+		log.Fatal(err)
+	}
+	database.DB.InitStatements()
+	defer database.DB.Close()
 
 	// init http server
 	router := router.NewRouter()
