@@ -59,9 +59,9 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	// Login / register
 	var user *usermodel.User
 	if userInput.Type == "login" {
-		user, err = login(&userInput)
+		user, err = login(userInput)
 	} else {
-		user, err = register(&userInput)
+		user, err = register(userInput)
 	}
 
 	if err != nil {

@@ -18,7 +18,7 @@ func InitJWTSecret() {
 	secret = []byte(env.GetEnv("JWT_SECRET"))
 }
 
-func CreateJWT(userID, username *string) (string, error) {
+func CreateJWT(userID, username string) (string, error) {
 	token := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
 		jwt.MapClaims{
@@ -36,8 +36,8 @@ func CreateJWT(userID, username *string) (string, error) {
 	return tokenStr, nil
 }
 
-func GetJWTClaims(tokenString *string) (jwt.MapClaims, error) {
-	token, err := jwt.Parse(*tokenString, func(t *jwt.Token) (interface{}, error) {
+func GetJWTClaims(tokenString string) (jwt.MapClaims, error) {
+	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		return secret, nil
 	})
 

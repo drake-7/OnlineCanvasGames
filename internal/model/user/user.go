@@ -6,8 +6,8 @@ import (
 )
 
 type User struct {
-	ID   *string
-	Name *string
+	ID   string
+	Name string
 }
 
 func NameExists(username *string) (bool, error) {
@@ -30,7 +30,7 @@ func NameExists(username *string) (bool, error) {
 	return true, nil
 }
 
-func Insert(username, password *string) (*User, error) {
+func Insert(username, password string) (*User, error) {
 	newUser := &User{Name: username}
 
 	hash, err := crypt.GenerateHash(password)
@@ -50,7 +50,7 @@ func Insert(username, password *string) (*User, error) {
 	return newUser, nil
 }
 
-func GetUserAndHash(username *string) (*User, *string, error) {
+func GetUserAndHash(username string) (*User, *string, error) {
 	user := &User{Name: username}
 
 	// check user existance

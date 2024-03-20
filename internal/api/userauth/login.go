@@ -7,8 +7,8 @@ import (
 	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
-func login(userInput *WelcomeUserInput) (*usermodel.User, error) {
-	user, hash, err := usermodel.GetUserAndHash(&userInput.Username)
+func login(userInput WelcomeUserInput) (*usermodel.User, error) {
+	user, hash, err := usermodel.GetUserAndHash(userInput.Username)
 
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -17,7 +17,7 @@ func login(userInput *WelcomeUserInput) (*usermodel.User, error) {
 		return nil, err
 	}
 
-	if !crypt.CheckHash(&userInput.Password, hash) {
+	if !crypt.CheckHash(userInput.Password, *hash) {
 		return nil, ErrNoUser
 	}
 
