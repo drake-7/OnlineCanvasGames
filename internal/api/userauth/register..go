@@ -6,7 +6,7 @@ import (
 
 func register(userInput WelcomeUserInput) (*usermodel.User, error) {
 	// check user existance
-	exists, err := usermodel.NameExists(&userInput.Username)
+	exists, err := usermodel.NameExists(userInput.Username)
 	if err != nil {
 		return nil, err
 	}

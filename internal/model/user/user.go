@@ -10,7 +10,7 @@ type User struct {
 	Name string
 }
 
-func NameExists(username *string) (bool, error) {
+func NameExists(username string) (bool, error) {
 	// check user existance
 	var exists bool
 
