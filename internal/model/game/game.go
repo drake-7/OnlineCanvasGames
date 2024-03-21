@@ -8,12 +8,7 @@ type Game struct {
 }
 
 func All() ([]Game, error) {
-	stmt, err := database.DB.GetStatement("getGames")
-	if err != nil {
-		return nil, err
-	}
-
-	rows, err := stmt.Query()
+	rows, err := database.DB.Query("SELECT id, title FROM games")
 	if err != nil {
 		return nil, err
 	}

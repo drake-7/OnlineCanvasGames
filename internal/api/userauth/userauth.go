@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	ErrNoUser     = errors.New("incorrect username or password")
+	ErrUserWrong  = errors.New("incorrect username or password")
 	ErrUserExists = errors.New("user with such name already exists")
 )
 
@@ -66,7 +66,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		switch err {
-		case ErrNoUser:
+		case ErrUserWrong:
 			http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
 		case ErrUserExists:
 			http.Error(w, fmt.Sprintf("%s already exists", userInput.Username), http.StatusUnauthorized)

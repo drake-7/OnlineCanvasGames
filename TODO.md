@@ -5,7 +5,7 @@
 - [X] Database storage for games
 
 - [X] Some system for containing games, users and models
-- [ ] Think of prepared statements and maybe get rid of them
+- [X] Think of prepared statements and maybe get rid of them
 
 - [ ] Game page
     - [ ] Frontend

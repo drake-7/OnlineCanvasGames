@@ -14,11 +14,7 @@ func NameExists(username string) (bool, error) {
 	// check user existance
 	var exists bool
 
-	stmt, err := database.DB.GetStatement("userExists")
-	if err != nil {
-		return false, err
-	}
-	err = stmt.QueryRow(username).Scan(&exists)
+	err := database.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE name = $1)", username).Scan(&exists)
 	if err != nil {
 		return false, err
 	}
@@ -38,11 +34,7 @@ func Insert(username, password string) (*User, error) {
 		return nil, err
 	}
 
-	stmt, err := database.DB.GetStatement("register")
-	if err != nil {
-		return nil, err
-	}
-	err = stmt.QueryRow(username, hash).Scan(&newUser.ID)
+	err = database.DB.QueryRow("INSERT INTO users (name, hash) VALUES ($1, $2) RETURNING id", username, hash).Scan(&newUser.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -50,18 +42,15 @@ func Insert(username, password string) (*User, error) {
 	return newUser, nil
 }
 
-func GetUserAndHash(username string) (*User, *string, error) {
+func GetUserAndHash(username string) (*User, string, error) {
 	user := &User{Name: username}
 
 	// check user existance
-	var hash *string
-	stmt, err := database.DB.GetStatement("getUserAndHash")
+	var hash string
+
+	err := database.DB.QueryRow("SELECT id, hash FROM users WHERE name = $1", username).Scan(&user.ID, hash)
 	if err != nil {
-		return nil, nil, err
-	}
-	err = stmt.QueryRow(username).Scan(&user.ID, &hash)
-	if err != nil {
-		return nil, nil, err
+		return nil, "", err
 	}
 
 	return user, hash, nil

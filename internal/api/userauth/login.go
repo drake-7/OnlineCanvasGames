@@ -12,13 +12,13 @@ func login(userInput WelcomeUserInput) (*usermodel.User, error) {
 
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, ErrNoUser
+			return nil, ErrUserWrong
 		}
 		return nil, err
 	}
 
-	if !crypt.CheckHash(userInput.Password, *hash) {
-		return nil, ErrNoUser
+	if !crypt.CheckHash(userInput.Password, hash) {
+		return nil, ErrUserWrong
 	}
 
 	return user, nil

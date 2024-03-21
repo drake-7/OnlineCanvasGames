@@ -14,16 +14,14 @@ import (
 func init() {
 	env.InitEnv()
 	auth.InitJWTSecret()
-	database.DB = &database.Database{}
 }
 
 func main() {
 	// init database
-	err := database.DB.Start()
+	err := database.Start()
 	if err != nil {
 		log.Fatal(err)
 	}
-	database.DB.InitStatements()
 	defer database.DB.Close()
 
 	// init http server
