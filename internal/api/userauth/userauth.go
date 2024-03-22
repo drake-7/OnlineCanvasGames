@@ -24,12 +24,6 @@ type WelcomeUserInput struct {
 }
 
 func UserAuthPost(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "post only", http.StatusMethodNotAllowed)
-		return
-	}
-	w.Header().Set("Content-Type", "text/plain")
-
 	// decode request
 	var userInput WelcomeUserInput
 	err := json.NewDecoder(r.Body).Decode(&userInput)

@@ -48,7 +48,7 @@ func GetUserAndHash(username string) (*User, string, error) {
 	// check user existance
 	var hash string
 
-	err := database.DB.QueryRow("SELECT id, hash FROM users WHERE name = $1", username).Scan(&user.ID, hash)
+	err := database.DB.QueryRow("SELECT id, hash FROM users WHERE name = $1", username).Scan(&user.ID, &hash)
 	if err != nil {
 		return nil, "", err
 	}

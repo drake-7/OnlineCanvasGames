@@ -16,11 +16,6 @@ type HomeData struct {
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "get only", http.StatusMethodNotAllowed)
-		return
-	}
-
 	data := HomeData{}
 
 	// get name from jwt
