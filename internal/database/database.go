@@ -9,7 +9,7 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const ErrNoStmt = errors.New("no statement found")
+var ErrNoStmt = errors.New("no statement found")
 
 type DBConf struct {
 	user string

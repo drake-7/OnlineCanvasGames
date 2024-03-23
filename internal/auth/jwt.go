@@ -8,12 +8,12 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-const (
-	JWTLifeTime        = time.Hour * 24
-	ErrBadToken        = errors.New("invalid token")
-)
+const JWTLifeTime = time.Hour * 24
 
-var secret = []byte()
+var (
+	ErrBadToken = errors.New("invalid token")
+	secret      = []byte("")
+)
 
 func InitJWTSecret() {
 	secret = []byte(env.GetEnv("JWT_SECRET"))
