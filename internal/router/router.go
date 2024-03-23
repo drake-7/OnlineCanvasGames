@@ -26,7 +26,7 @@ func NewRouter() http.Handler {
 		r.Use(AuthMiddlewareHTML)
 
 		r.Get("/", homeapi.HomePage)
-		r.Get("/game", gamepageapi.GamePage)
+		r.Get("/game/{id}", gamepageapi.GamePage)
 	})
 
 	// Non-Html
