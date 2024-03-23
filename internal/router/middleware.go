@@ -37,7 +37,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
 }
 
 // check JWT for HTML handlers
-func AuthMiddlewareHTML(next http.HandlerFunc) http.HandlerFunc {
+func AuthMiddlewareHTML(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// get token from cookie
 		cookie, err := r.Cookie("jwt")
