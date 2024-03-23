@@ -12,36 +12,34 @@ import (
 
 func NewRouter() http.Handler {
 	router := chi.NewRouter()
-
 	router.Use(middleware.Logger)
 	router.Use(middleware.RedirectSlashes)
-
-	// Non-Protected Routes
-	// Non-html
-	router.Post("/api/userauth", userauthapi.UserAuthPost)
-
-	// Protected Routes
-	// Html
-	router.Group(func(r chi.Router) {
-		r.Use(AuthMiddlewareHTML)
-
-		r.Get("/", homeapi.HomePage)
-		r.Get("/game/{id}", gamepageapi.GamePage)
-	})
-
-	// Non-Html
-	router.Group(func(r chi.Router) {
-		r.Use(AuthMiddleware)
-
-		// TEST CASE
-		r.Get("/some", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("data"))
-		}))
-	})
 
 	// static
 	staticFileServer := http.FileServer(http.Dir("./web/static/"))
 	router.Handle("/static/*", http.StripPrefix("/static", staticFileServer))
+
+	// public
+	router.Group(func(r chi.Router) {
+		r.Post("/api/userauth", userauthapi.UserAuthPost)
+	})
+
+	// protected html
+	router.Group(func(rAuth chi.Router) {
+		rAuth.Use(AuthMiddlewareHTML)
+
+		rAuth.Get("/", homeapi.HomePage)
+		rAuth.Get("/game/{id}", gamepageapi.GamePage)
+	})
+
+	// protected non-Html
+	router.Group(func(rAuth chi.Router) {
+		rAuth.Use(AuthMiddleware)
+
+		rAuth.Get("/some", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("data"))
+		}))
+	})
 
 	return router
 }
