@@ -12,7 +12,7 @@ import (
 	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
-var (
+const (
 	ErrUserWrong  = errors.New("incorrect username or password")
 	ErrUserExists = errors.New("user with such name already exists")
 )

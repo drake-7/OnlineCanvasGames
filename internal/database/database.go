@@ -9,16 +9,15 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const ErrNoStmt = errors.New("no statement found")
+
 type DBConf struct {
 	user string
 	name string
 	pass string
 }
 
-var (
-	ErrNoStmt = errors.New("no statement found")
-	DB        *sql.DB
-)
+var DB *sql.DB
 
 func Start() error {
 	// init database
