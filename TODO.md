@@ -6,7 +6,7 @@
 
 - [X] Some system for containing games, users and models
 - [X] Think of prepared statements and maybe get rid of them
-- [ ] Maybe switch to chi mux
+- [X] Maybe switch to chi mux
 
 - [ ] Game page
     - [ ] Frontend
