@@ -7,7 +7,7 @@
 - [X] Some system for containing games, users and models
 - [X] Think of prepared statements and maybe get rid of them
 - [X] Maybe switch to chi mux
-- [ ] Clarify the project structure
+- [X] Clean the project structure
 
 - [ ] Game page
     - [ ] Frontend

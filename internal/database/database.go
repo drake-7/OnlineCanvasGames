@@ -22,9 +22,9 @@ var DB *sql.DB
 func Start() error {
 	// init database
 	dbConf := DBConf{
-		env.GetEnv("DB_USER"),
-		env.GetEnv("DB_NAME"),
-		env.GetEnv("DB_PASS"),
+		env.GetEnvVal("DB_USER"),
+		env.GetEnvVal("DB_NAME"),
+		env.GetEnvVal("DB_PASS"),
 	}
 	connStr := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", dbConf.user, dbConf.pass, dbConf.name)
 

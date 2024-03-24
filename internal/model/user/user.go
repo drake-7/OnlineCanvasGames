@@ -1,6 +1,8 @@
 package usermodel
 
 import (
+	"errors"
+
 	"github.com/1001bit/OnlineCanvasGames/internal/crypt"
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 )
@@ -10,20 +12,23 @@ type User struct {
 	Name string
 }
 
-func NameExists(username string) (bool, error) {
-	// check user existance
+var (
+	ErrNoUserExists = errors.New("user with such name doesn't exist")
+)
+
+func NameExists(username string) error {
 	var exists bool
 
 	err := database.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE name = $1)", username).Scan(&exists)
 	if err != nil {
-		return false, err
+		return err
 	}
 
 	if !exists {
-		return false, nil
+		return ErrNoUserExists
 	}
 
-	return true, nil
+	return nil
 }
 
 func Insert(username, password string) (*User, error) {
@@ -44,8 +49,6 @@ func Insert(username, password string) (*User, error) {
 
 func GetUserAndHash(username string) (*User, string, error) {
 	user := &User{Name: username}
-
-	// check user existance
 	var hash string
 
 	err := database.DB.QueryRow("SELECT id, hash FROM users WHERE name = $1", username).Scan(&user.ID, &hash)

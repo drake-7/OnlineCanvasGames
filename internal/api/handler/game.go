@@ -1,4 +1,4 @@
-package gamepageapi
+package handler
 
 import (
 	"fmt"

@@ -7,7 +7,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func GetEnv(key string) string {
+func GetEnvVal(key string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}

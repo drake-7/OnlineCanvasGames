@@ -16,7 +16,7 @@ var (
 )
 
 func InitJWTSecret() {
-	secret = []byte(env.GetEnv("JWT_SECRET"))
+	secret = []byte(env.GetEnvVal("JWT_SECRET"))
 }
 
 func CreateJWT(userID, username string) (string, error) {

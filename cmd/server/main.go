@@ -5,10 +5,10 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/1001bit/OnlineCanvasGames/internal/api/router"
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 	"github.com/1001bit/OnlineCanvasGames/internal/env"
-	"github.com/1001bit/OnlineCanvasGames/internal/router"
 )
 
 func init() {
@@ -17,19 +17,19 @@ func init() {
 }
 
 func main() {
-	// init database
+	// start database
 	err := database.Start()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer database.DB.Close()
 
-	// init http server
+	// start http server
 	router := router.NewRouter()
 
 	port := 8080
 	addr := fmt.Sprintf("localhost:%d", port)
 
-	log.Printf("Listening on %s\n", addr)
+	log.Println("Listening on", addr)
 	log.Fatal(http.ListenAndServe(addr, router))
 }

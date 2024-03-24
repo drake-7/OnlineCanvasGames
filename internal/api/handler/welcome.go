@@ -1,4 +1,4 @@
-package welcomeapi
+package handler
 
 import (
 	"net/http"

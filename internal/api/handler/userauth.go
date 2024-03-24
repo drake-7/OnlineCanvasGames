@@ -1,8 +1,7 @@
-package userauthapi
+package handler
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,23 +11,19 @@ import (
 	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
-var (
-	ErrUserWrong  = errors.New("incorrect username or password")
-	ErrUserExists = errors.New("user with such name already exists")
-)
-
 type WelcomeUserInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Type     string `json:"type"`
 }
 
-func UserAuthPost(w http.ResponseWriter, r *http.Request) {
+func AuthPost(w http.ResponseWriter, r *http.Request) {
 	// decode request
 	var userInput WelcomeUserInput
+
 	err := json.NewDecoder(r.Body).Decode(&userInput)
 	if err != nil {
-		http.Error(w, "Could not decode the request", http.StatusBadRequest)
+		http.Error(w, "Something went wrong", http.StatusBadRequest)
 		return
 	}
 
@@ -52,20 +47,21 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 
 	// Login / register
 	var user *usermodel.User
-	if userInput.Type == "login" {
-		user, err = login(userInput)
-	} else {
-		user, err = register(userInput)
+	switch userInput.Type {
+	case "login":
+		user, err = usermodel.Login(userInput.Username, userInput.Password)
+	case "register":
+		user, err = usermodel.Register(userInput.Username, userInput.Password)
 	}
 
 	if err != nil {
 		switch err {
-		case ErrUserWrong:
+		case usermodel.ErrUserWrong:
 			http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
-		case ErrUserExists:
+		case usermodel.ErrUserExists:
 			http.Error(w, fmt.Sprintf("%s already exists", userInput.Username), http.StatusUnauthorized)
 		default:
-			http.Error(w, "server error", http.StatusInternalServerError)
+			http.Error(w, "Something went wrong", http.StatusInternalServerError)
 			log.Println("login/register err:", err)
 		}
 		return
@@ -74,7 +70,7 @@ func UserAuthPost(w http.ResponseWriter, r *http.Request) {
 	// set token cookie
 	token, err := auth.CreateJWT(user.ID, user.Name)
 	if err != nil {
-		http.Error(w, "server error", http.StatusInternalServerError)
+		http.Error(w, "Something went wrong", http.StatusInternalServerError)
 		log.Println("jwt creation err:", err)
 		return
 	}
