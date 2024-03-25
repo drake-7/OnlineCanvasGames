@@ -11,6 +11,7 @@ func GetEnvVal(key string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value
 	}
+	log.Println("Couldn't find value in environment:", key)
 	return ""
 }
 
