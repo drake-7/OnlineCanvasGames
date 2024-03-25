@@ -1,9 +1,11 @@
 package gamemodel
 
-import "github.com/1001bit/OnlineCanvasGames/internal/database"
+import (
+	"github.com/1001bit/OnlineCanvasGames/internal/database"
+)
 
 type Game struct {
-	ID    string
+	ID    int
 	Title string
 }
 
@@ -28,4 +30,17 @@ func All() ([]Game, error) {
 	}
 
 	return games, nil
+}
+
+func ByID(id int) (*Game, error) {
+	var game = &Game{
+		ID: id,
+	}
+
+	err := database.DB.QueryRow("SELECT title FROM games WHERE id = $1", id).Scan(&game.Title)
+	if err != nil {
+		return nil, err
+	}
+
+	return game, nil
 }

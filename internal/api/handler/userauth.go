@@ -11,7 +11,7 @@ import (
 	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
 )
 
-type WelcomeUserInput struct {
+type AuthUserInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Type     string `json:"type"`
@@ -19,11 +19,11 @@ type WelcomeUserInput struct {
 
 func AuthPost(w http.ResponseWriter, r *http.Request) {
 	// decode request
-	var userInput WelcomeUserInput
+	var userInput AuthUserInput
 
 	err := json.NewDecoder(r.Body).Decode(&userInput)
 	if err != nil {
-		http.Error(w, "Something went wrong", http.StatusBadRequest)
+		ServerError(w, r)
 		return
 	}
 
@@ -61,7 +61,7 @@ func AuthPost(w http.ResponseWriter, r *http.Request) {
 		case usermodel.ErrUserExists:
 			http.Error(w, fmt.Sprintf("%s already exists", userInput.Username), http.StatusUnauthorized)
 		default:
-			http.Error(w, "Something went wrong", http.StatusInternalServerError)
+			ServerError(w, r)
 			log.Println("login/register err:", err)
 		}
 		return
@@ -70,7 +70,7 @@ func AuthPost(w http.ResponseWriter, r *http.Request) {
 	// set token cookie
 	token, err := auth.CreateJWT(user.ID, user.Name)
 	if err != nil {
-		http.Error(w, "Something went wrong", http.StatusInternalServerError)
+		ServerError(w, r)
 		log.Println("jwt creation err:", err)
 		return
 	}

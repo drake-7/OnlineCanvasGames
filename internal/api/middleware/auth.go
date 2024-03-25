@@ -11,7 +11,7 @@ import (
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !auth.CheckCookieJWT(r) {
-			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			handler.Unauthorized(w, r)
 			return
 		}
 
@@ -19,11 +19,11 @@ func Auth(next http.Handler) http.Handler {
 	})
 }
 
-// welcome page for unauthorized
+// auth page for unauthorized
 func AuthHTML(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if !auth.CheckCookieJWT(r) {
-			handler.WelcomePage(w, r)
+			handler.AuthPage(w, r)
 			return
 		}
 

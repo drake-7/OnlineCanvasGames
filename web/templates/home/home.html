@@ -12,12 +12,14 @@
     <h2>Available online games ({{ len .Games }}):</h2>
     <div class="card-group">
         {{ range .Games }}
-        <div class="card">
-            <div class="img-holder">
-                <img src="http://placehold.it/100x100">
+        <a href="/game/{{ .ID }}">
+            <div class="card">
+                <div class="img-holder">
+                    <img src="http://placehold.it/100x80">
+                </div>
+                <button class="style-button small physical">{{ .Title }}</button>
             </div>
-            <button class="style-button small physical">{{ .Title }}</button>
-        </div>
+        </a>
         {{ end }}
     </div>
 </body>

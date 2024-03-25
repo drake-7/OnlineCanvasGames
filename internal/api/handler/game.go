@@ -1,10 +1,40 @@
 package handler
 
 import (
-	"fmt"
+	"database/sql"
 	"net/http"
+	"strconv"
+
+	gamemodel "github.com/1001bit/OnlineCanvasGames/internal/model/game"
+	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
+type GameData struct {
+	Game *gamemodel.Game
+}
+
 func GamePage(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte(fmt.Sprintf("game page %s", r.PathValue("id"))))
+	data := GameData{
+		Game: &gamemodel.Game{},
+	}
+
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		NotFound(w, r)
+	}
+
+	data.Game.ID = id
+	data.Game, err = gamemodel.ByID(id)
+
+	if err != nil {
+		switch err {
+		case sql.ErrNoRows:
+			NotFound(w, r)
+		default:
+			ServerError(w, r)
+		}
+		return
+	}
+
+	tmplloader.Templates.ExecuteTemplate(w, "game.html", data)
 }

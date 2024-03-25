@@ -21,13 +21,14 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	// get name from jwt
 	cookie, err := r.Cookie("jwt")
 	if err != nil {
-		http.Error(w, "unauthorized", http.StatusUnauthorized)
+		AuthPage(w, r)
 		return
 	}
 
 	claims, err := auth.GetJWTClaims(cookie.Value)
 	if err != nil {
-		http.Error(w, "bad token", http.StatusUnauthorized)
+		AuthPage(w, r)
+		return
 	}
 
 	data.Name = fmt.Sprint(claims["username"])
