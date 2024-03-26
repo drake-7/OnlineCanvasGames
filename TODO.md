@@ -10,7 +10,8 @@
 - [ ] Game page
     - [X] Frontend
     - [X] Backend
-    - [ ] Icon and thumbnail for game
+    - [X] Icon and thumbnail for game
+    - [ ] Allow storing images in formats (png, jpg)
 
 - [ ] Gameplay page
     - [ ] Frontend

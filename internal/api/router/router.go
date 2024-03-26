@@ -14,30 +14,36 @@ func NewRouter() http.Handler {
 	router.Use(chimw.Logger)
 	router.Use(chimw.RedirectSlashes)
 
-	// static
+	// PUBLIC
+	// Static
 	staticFileServer := http.FileServer(http.Dir("./web/static/"))
 	router.Handle("/static/*", http.StripPrefix("/static", staticFileServer))
 
-	// public
+	// Storage
+	storageFileServer := http.FileServer(http.Dir("./web/storage/"))
+	router.Handle("/storage/*", http.StripPrefix("/storage", storageFileServer))
+
+	// Plaintext
 	router.Group(func(r chi.Router) {
 		r.Post("/api/userauth", handler.AuthPost)
 	})
 
-	// protected html
-	router.Group(func(r chi.Router) {
-		r.Use(middleware.AuthHTML)
-
-		r.Get("/", handler.HomePage)
-		r.Get("/game/{id}", handler.GamePage)
-	})
-
-	// protected non-Html
+	// PROTECTED
+	// Plaintext
 	router.Group(func(r chi.Router) {
 		r.Use(middleware.Auth)
 
 		r.Get("/some", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("data"))
 		}))
+	})
+
+	// HTML
+	router.Group(func(r chi.Router) {
+		r.Use(middleware.AuthHTML)
+
+		r.Get("/", handler.HomePage)
+		r.Get("/game/{id}", handler.GamePage)
 	})
 
 	return router
