@@ -1,0 +1,26 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#game {
+    margin-top: 20px;
+    width: fit-content;
+    background-color: var(--sec-elem-color);
+    padding: 24px;
+    border-radius: 4px;
+    box-shadow: 0px 8px 16px black;
+    text-align: center;
+}
+
+#game .img-holder {
+    width: 600px;
+    height: 400px;
+    margin-bottom: 12px;
+}
+
+#game .style-button {
+    width: 100%;
+}

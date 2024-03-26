@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/global/style.css">
+    <link rel="stylesheet" href="/static/game/style.css">
     <title>{{ .Game.Title }}</title>
 </head>
 <body>
-    <h1>{{ .Game.Title }}</h1>
+    <div id="game">
+        <div class="img-holder">
+            <img src="http://placehold.it/600x400">
+        </div>
+        <h1>{{ .Game.Title }}</h1>
+        <button class="style-button physical big-font">Play</button>
+    </div>
 </body>
 </html>

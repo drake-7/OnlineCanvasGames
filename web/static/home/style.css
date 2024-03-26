@@ -7,19 +7,20 @@
 .card {
     display: flex;
     flex-direction: column;
-    border-radius: 7px;
+    border-radius: 8px;
     font-size: 16px;
     font-weight: 600;
     background-color:var(--sec-elem-color);
     word-wrap: break-word;
     align-items: center;
-    padding: 5px;
-    box-shadow: 0px 3px 5px #000000;
+    padding: 8px;
+    box-shadow: 0px 4px 8px #000000;
 }
 
 .card .img-holder {
     height: 150px;
     width: 150px;
+    margin-bottom: 4px;
 }
 
 .card .style-button {

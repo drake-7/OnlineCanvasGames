@@ -12,7 +12,7 @@ body {
     font-weight: 500;
     background-color: var(--main-bg-color);
     margin: 0;
-    padding: 7px;
+    padding: 12px;
     color: rgb(230, 230, 230);
     overflow-x: hidden;
 }
@@ -28,7 +28,7 @@ a {
 }
 
 p {
-    margin-block: 5px;
+    margin-block: 4px;
 }
 
 .nowrap {
@@ -38,45 +38,48 @@ p {
 /* BUTTON */
 
 .style-button {
-    padding: 10px;
-    max-height: 40px;
+    padding: 8px;
     border: none;
     border-radius: 4px;
     color: white;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 20px;
     background-color: var(--main-btn-color);
     align-items: center;
     align-content: center;
     font-family: 'Nunito', sans-serif;
 }
 
+.style-button.big-font {
+    font-size: 24px;
+} 
+
 .style-button:hover {
     background-color: #4aac4d;
 }
 
 .style-button.physical {
-    transition: transform 0.027s;
-    box-shadow: 0 5px #1a1a1a;
+    transition: 0.027s;
+    box-shadow: 0 4px #1a1a1a;
     transform: translateY(-4px);
     margin-top: 8px;
 }
 
 .style-button.physical:active {
-    box-shadow: 0 0px #000;
+    box-shadow: 0 0px black;
     transform: translateY(1px);
 }
 
 /* small */
 
 .style-button.small {
-    padding: 5px;
+    padding: 4px;
 }
 
 .style-button.small.physical {
-    box-shadow: 0 3px #1a1a1a;
+    box-shadow: 0 4px #1a1a1a;
     transform: translateY(-2px);
-    margin-top: 6px;
+    margin-top: 8px;
 }
 
 .style-button.small.physical:active {
@@ -87,7 +90,7 @@ p {
 /* IMAGE HOLDER */
 
 .img-holder {
-    border-radius: 7px;
+    border-radius: 8px;
     width: 100%;
     background-color: var(--thr-elem-color);
     overflow: hidden;
@@ -100,4 +103,8 @@ p {
     width: 100%;
     height: 100%;
     object-fit: contain;
+}
+
+.img-holder img[src=""]{
+    display: none;
 }

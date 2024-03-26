@@ -2,20 +2,20 @@
     - [X] Frontend
     - [X] Backend
 
-- [X] Database storage for games
-
-- [X] Some system for containing games, users and models
-- [X] Think of prepared statements and maybe get rid of them
-- [X] Maybe switch to chi mux
+- [X] Database models
+- [X] Get rid of prepared statements
+- [X] Switch to chi mux
 - [X] Clean the project structure
 
 - [ ] Game page
-    - [ ] Frontend
-    - [ ] Backend
+    - [X] Frontend
+    - [X] Backend
+    - [ ] Icon and thumbnail for game
 
 - [ ] Gameplay page
     - [ ] Frontend
     - [ ] Backend
+        - [ ] Socket connection
 
 - [ ] Some kind of game engine
 
