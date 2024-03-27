@@ -13,6 +13,9 @@
     - [X] Icon and thumbnail for game
     - [X] Allow storing images in formats (png, jpg)
 
+- [ ] Favicon
+- [ ] Header
+
 - [ ] Gameplay page
     - [ ] Frontend
     - [ ] Backend
