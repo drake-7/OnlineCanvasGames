@@ -13,6 +13,7 @@
     - [X] Icon and thumbnail for game
     - [X] Allow storing images in formats (png, jpg)
 
+- [ ] Open access to some pages for unauthorized users
 - [ ] Favicon
 - [ ] Header
 
