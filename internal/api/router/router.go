@@ -15,13 +15,11 @@ func NewRouter() http.Handler {
 	router.Use(chimw.RedirectSlashes)
 
 	// PUBLIC
-	// Static
-	staticFileServer := http.FileServer(http.Dir("./web/static/"))
-	router.Handle("/static/*", http.StripPrefix("/static", staticFileServer))
+	// Static Storage
+	router.Handle("/static/*", http.StripPrefix("/static", http.HandlerFunc(handler.StaticStorage)))
 
-	// Storage
-	storageFileServer := http.FileServer(http.Dir("./web/storage/"))
-	router.Handle("/storage/*", http.StripPrefix("/storage", storageFileServer))
+	// Image Storage
+	router.Handle("/image/*", http.StripPrefix("/image", http.HandlerFunc(handler.ImageStorage)))
 
 	// Plaintext
 	router.Group(func(r chi.Router) {

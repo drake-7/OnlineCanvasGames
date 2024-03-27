@@ -7,11 +7,11 @@
 - [X] Switch to chi mux
 - [X] Clean the project structure
 
-- [ ] Game page
+- [X] Game page
     - [X] Frontend
     - [X] Backend
     - [X] Icon and thumbnail for game
-    - [ ] Allow storing images in formats (png, jpg)
+    - [X] Allow storing images in formats (png, jpg)
 
 - [ ] Gameplay page
     - [ ] Frontend
