@@ -9,12 +9,24 @@ import (
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
 	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
+	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
 type AuthUserInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Type     string `json:"type"`
+}
+
+func AuthPage(w http.ResponseWriter, r *http.Request) {
+	// only unauthorized may see this page
+	_, err := auth.JWTClaimsByCookie(r)
+	if err == nil {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	tmplloader.Templates.ExecuteTemplate(w, "auth.html", nil)
 }
 
 func AuthPost(w http.ResponseWriter, r *http.Request) {

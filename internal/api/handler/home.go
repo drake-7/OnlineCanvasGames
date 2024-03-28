@@ -18,20 +18,13 @@ type HomeData struct {
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	data := HomeData{}
 
-	// get name from jwt
-	cookie, err := r.Cookie("jwt")
-	if err != nil {
-		AuthPage(w, r)
-		return
+	claims, err := auth.JWTClaimsByCookie(r)
+	switch err {
+	case nil:
+		data.Name = fmt.Sprint(claims["username"])
+	default:
+		data.Name = "Guest"
 	}
-
-	claims, err := auth.GetJWTClaims(cookie.Value)
-	if err != nil {
-		AuthPage(w, r)
-		return
-	}
-
-	data.Name = fmt.Sprint(claims["username"])
 
 	// games count
 	data.Games, err = gamemodel.All()

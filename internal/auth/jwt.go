@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"net/http"
 	"time"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/env"
@@ -37,7 +38,23 @@ func CreateJWT(userID int, username string) (string, error) {
 	return tokenStr, nil
 }
 
-func GetJWTClaims(tokenString string) (jwt.MapClaims, error) {
+func JWTClaimsByCookie(r *http.Request) (jwt.MapClaims, error) {
+	// get token from cookie
+	cookie, err := r.Cookie("jwt")
+	if err != nil {
+		return nil, err
+	}
+
+	// get token claims
+	claims, err := jwtClaimsByString(cookie.Value)
+	if err != nil {
+		return nil, err
+	}
+
+	return claims, nil
+}
+
+func jwtByString(tokenString string) (*jwt.Token, error) {
 	token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
 		return secret, nil
 	})
@@ -46,9 +63,28 @@ func GetJWTClaims(tokenString string) (jwt.MapClaims, error) {
 		return nil, err
 	}
 
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		return claims, nil
+	if !token.Valid {
+		return nil, ErrBadToken
 	}
 
-	return nil, ErrBadToken
+	return token, nil
+}
+
+func jwtClaimsByString(tokenString string) (jwt.MapClaims, error) {
+	token, err := jwtByString(tokenString)
+	if err != nil {
+		return nil, err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		return nil, ErrBadToken
+	}
+
+	expTime, err := claims.GetExpirationTime()
+	if err != nil || expTime.Before(time.Now()) {
+		return nil, ErrBadToken
+	}
+
+	return claims, nil
 }

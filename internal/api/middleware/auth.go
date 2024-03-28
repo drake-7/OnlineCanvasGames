@@ -10,7 +10,8 @@ import (
 // plain text for unauthorized
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !auth.CheckCookieJWT(r) {
+		_, err := auth.JWTClaimsByCookie(r)
+		if err != nil {
 			handler.Unauthorized(w, r)
 			return
 		}
@@ -22,7 +23,8 @@ func Auth(next http.Handler) http.Handler {
 // auth page for unauthorized
 func AuthHTML(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if !auth.CheckCookieJWT(r) {
+		_, err := auth.JWTClaimsByCookie(r)
+		if err != nil {
 			handler.AuthPage(w, r)
 			return
 		}
