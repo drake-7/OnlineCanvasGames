@@ -8,6 +8,9 @@
     <title>{{ .Game.Title }}</title>
 </head>
 <body>
+    {{ template "header" . }}
+    <main>
+        
     <div id="game">
         <div class="img-holder">
             <img src="/image/gamethumbnail/{{ .Game.ID }}">
@@ -15,5 +18,7 @@
         <h1>{{ .Game.Title }}</h1>
         <button class="style-button physical big-font">Play</button>
     </div>
+    
+    </main>
 </body>
 </html>

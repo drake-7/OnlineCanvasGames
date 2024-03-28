@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="/static/home/style.css">
 </head>
 <body>
+    {{ template "header" . }}
+    <main>
+
     <h1>Hello, {{ .Name }}!</h1>
     <h2>Available online games ({{ len .Games }}):</h2>
     <div class="card-group">
@@ -22,5 +25,7 @@
         </a>
         {{ end }}
     </div>
+
+    </main>
 </body>
 </html>

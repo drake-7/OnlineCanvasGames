@@ -8,9 +8,9 @@ body {
 #game {
     margin-top: 20px;
     width: fit-content;
-    background-color: var(--sec-elem-color);
+    background-color: var(--third-color);
     padding: 24px;
-    border-radius: 4px;
+    border-radius: 8px;
     box-shadow: 0px 8px 16px black;
     text-align: center;
 }

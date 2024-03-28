@@ -1,5 +1,4 @@
 body {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,14 +9,18 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: -80px;
+    position: absolute;
+    top: calc(50% - var(--header-height));
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
 }
 
 #auth-form {
     margin-top: 52px;
     margin-bottom: 12px;
-    background-color: var(--sec-elem-color);
-    border: 1px solid var(--main-bg-color);
+    background-color: var(--third-color);
+    border: 1px solid var(--second-color);
     border-radius: 8px;
     padding: 20px;
     width: 300px;
@@ -29,19 +32,20 @@ main {
     width: 100%;
     padding: 12px;
     margin-bottom: 12px;
-    border: 1px solid var(--main-bg-color);
+    border: 1px solid var(--second-color);
     border-radius: 8px;
-    background-color: var(--main-bg-color);
+    background-color: var(--second-color);
     color: white;
     font-size: 16px;
+}
+
+#auth-form input:focus {
+    outline: none;
+    border: 1px solid var(--prim-color);
 }
   
 #auth-form button {
     width: calc(50% - 3px);
-}
-  
-#register {
-    margin-top: 12px;
 }
 
 h1, #info {
