@@ -15,6 +15,7 @@ func NewRouter() http.Handler {
 
 	// Storage
 	router.Handle("/static/*", http.StripPrefix("/static", http.HandlerFunc(handler.StaticStorage)))
+	router.Handle("/favicon.ico", http.HandlerFunc(handler.StaticStorage))
 	router.Handle("/image/*", http.StripPrefix("/image", http.HandlerFunc(handler.ImageStorage)))
 
 	// Post

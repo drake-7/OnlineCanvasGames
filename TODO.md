@@ -16,7 +16,7 @@
 - [X] Open access to some pages for unauthorized users
 - [X] Header
 - [X] Responsive design
-- [ ] Favicon
+- [X] Favicon
 
 - [ ] Profile page
     - [ ] Frontend
