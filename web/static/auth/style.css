@@ -10,7 +10,8 @@ main {
     flex-direction: column;
     align-items: center;
     position: absolute;
-    top: calc(50% - var(--header-height));
+    
+    top: calc(48% - var(--header-height));
     -webkit-transform: translateY(-50%);
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
@@ -19,10 +20,9 @@ main {
 #auth-form {
     margin-top: 52px;
     margin-bottom: 12px;
-    background-color: var(--third-color);
-    border: 1px solid var(--second-color);
+    background: var(--second-dark-color);
     border-radius: 8px;
-    padding: 20px;
+    padding: 24px;
     width: 300px;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
 }
@@ -31,17 +31,16 @@ main {
     box-sizing: border-box;
     width: 100%;
     padding: 12px;
-    margin-bottom: 12px;
+    margin-bottom: 20px;
     border: 1px solid var(--second-color);
     border-radius: 8px;
-    background-color: var(--second-color);
+    background: var(--second-color);
     color: white;
     font-size: 16px;
 }
 
 #auth-form input:focus {
     outline: none;
-    border: 1px solid var(--prim-color);
 }
   
 #auth-form button {

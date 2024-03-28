@@ -36,5 +36,5 @@ func GamePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmplloader.Templates.ExecuteTemplate(w, "game.html", data)
+	tmplloader.ExecuteTemplate(w, r, "game.html", data)
 }

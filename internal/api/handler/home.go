@@ -11,19 +11,16 @@ import (
 )
 
 type HomeData struct {
-	Name  string
-	Games []gamemodel.Game
+	Username string
+	Games    []gamemodel.Game
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	data := HomeData{}
 
 	claims, err := auth.JWTClaimsByCookie(r)
-	switch err {
-	case nil:
-		data.Name = fmt.Sprint(claims["username"])
-	default:
-		data.Name = "Guest"
+	if err == nil {
+		data.Username = fmt.Sprint(claims["username"])
 	}
 
 	// games count
@@ -33,5 +30,5 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		log.Println("error getting games:", err)
 	}
 
-	tmplloader.Templates.ExecuteTemplate(w, "home.html", data)
+	tmplloader.ExecuteTemplate(w, r, "home.html", data)
 }

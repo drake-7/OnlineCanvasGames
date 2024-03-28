@@ -26,7 +26,7 @@ func AuthPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmplloader.Templates.ExecuteTemplate(w, "auth.html", nil)
+	tmplloader.ExecuteTemplate(w, r, "auth.html", nil)
 }
 
 func AuthPost(w http.ResponseWriter, r *http.Request) {

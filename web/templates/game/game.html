@@ -5,17 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/global/style.css">
     <link rel="stylesheet" href="/static/game/style.css">
-    <title>{{ .Game.Title }}</title>
+    <title>{{ .Data.Game.Title }}</title>
 </head>
 <body>
-    {{ template "header" . }}
+    {{ template "header" .Header }}
     <main>
         
     <div id="game">
         <div class="img-holder">
-            <img src="/image/gamethumbnail/{{ .Game.ID }}">
+            <img src="/image/gamethumbnail/{{ .Data.Game.ID }}">
         </div>
-        <h1>{{ .Game.Title }}</h1>
+        <h1>{{ .Data.Game.Title }}</h1>
         <button class="style-button physical big-font">Play</button>
     </div>
     

@@ -14,9 +14,13 @@
     - [X] Allow storing images in formats (png, jpg)
 
 - [X] Open access to some pages for unauthorized users
-- [ ] Header
-- [ ] Responsive design
+- [X] Header
+- [X] Responsive design
 - [ ] Favicon
+
+- [ ] Profile page
+    - [ ] Frontend
+    - [ ] Backend
 
 - [ ] Gameplay page
     - [ ] Frontend

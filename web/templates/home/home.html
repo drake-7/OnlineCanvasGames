@@ -8,14 +8,19 @@
     <link rel="stylesheet" href="/static/home/style.css">
 </head>
 <body>
-    {{ template "header" . }}
+    {{ template "header" .Header }}
     <main>
-
-    <h1>Hello, {{ .Name }}!</h1>
-    <h2>Available online games ({{ len .Games }}):</h2>
+    
+    {{ if eq .Data.Username "" }}
+        <h1>Hello, Guest!</h1>
+    {{ else }}
+        <h1>Welcome back, {{ .Data.Username }}!</h1>
+    {{ end }}
+    <h2>Available online games ({{ len .Data.Games }}):</h2>
     <div class="card-group">
-        {{ range .Games }}
-        <a href="/game/{{ .ID }}">
+        {{ range .Data.Games }}
+
+        <a href="/game/{{.ID }}">
             <div class="card">
                 <div class="img-holder">
                     <img src="/image/gameicon/{{ .ID }}">
@@ -23,6 +28,7 @@
                 <button class="style-button small physical">{{ .Title }}</button>
             </div>
         </a>
+
         {{ end }}
     </div>
 

@@ -1,5 +1,13 @@
 {{ define "header" }}
 <header>
+    <a href="/"><button class="style-button small">Home</button></a>
+
+    <div class="separator"> </div>
     
+    {{ if eq .Username "" }}
+        <a href="/auth"><button class="style-button small">Log In / Register</button></a>
+    {{ else }}
+        <a href="/#{{ .UserID }}"><button class="style-button small">{{ .Username }}</button></a>
+    {{ end }}
 </header>
 {{ end }}
