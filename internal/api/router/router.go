@@ -25,6 +25,7 @@ func NewRouter() http.Handler {
 	router.Get("/", handler.HomePage)
 	router.Get("/auth", handler.AuthPage)
 	router.Get("/game/{id}", handler.GamePage)
+	router.Get("/profile/{id}", handler.ProfilePage)
 
 	return router
 }

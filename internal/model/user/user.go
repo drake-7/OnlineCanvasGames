@@ -47,7 +47,7 @@ func Insert(username, password string) (*User, error) {
 	return newUser, nil
 }
 
-func GetUserAndHash(username string) (*User, string, error) {
+func UserAndHashByName(username string) (*User, string, error) {
 	user := &User{Name: username}
 	var hash string
 
@@ -57,4 +57,15 @@ func GetUserAndHash(username string) (*User, string, error) {
 	}
 
 	return user, hash, nil
+}
+
+func ByID(userID int) (*User, error) {
+	user := &User{ID: userID}
+
+	err := database.DB.QueryRow("SELECT name FROM users WHERE id = $1", userID).Scan(&user.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }

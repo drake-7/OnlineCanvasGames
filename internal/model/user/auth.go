@@ -13,7 +13,7 @@ var (
 )
 
 func Login(username, password string) (*User, error) {
-	user, hash, err := GetUserAndHash(username)
+	user, hash, err := UserAndHashByName(username)
 
 	if err != nil {
 		if err == sql.ErrNoRows {

@@ -21,6 +21,7 @@ func GamePage(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
 		NotFound(w, r)
+		return
 	}
 
 	data.Game.ID = id

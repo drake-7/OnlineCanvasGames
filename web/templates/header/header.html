@@ -7,7 +7,7 @@
     {{ if eq .Username "" }}
         <a href="/auth"><button class="style-button small">Log In / Register</button></a>
     {{ else }}
-        <a href="/#{{ .UserID }}"><button class="style-button small">{{ .Username }}</button></a>
+        <a href="/profile/{{ .UserID }}"><button class="style-button small">{{ .Username }}</button></a>
     {{ end }}
 </header>
 {{ end }}
