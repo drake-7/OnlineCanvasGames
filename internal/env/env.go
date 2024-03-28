@@ -8,11 +8,11 @@ import (
 )
 
 func GetEnvVal(key string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
+	value, ok := os.LookupEnv(key)
+	if !ok {
+		log.Println("couldn't find environment value:", key)
 	}
-	log.Println("Couldn't find value in environment:", key)
-	return ""
+	return value
 }
 
 func InitEnv() {
