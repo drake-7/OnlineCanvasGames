@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"time"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/env"
 	_ "github.com/lib/pq"
@@ -41,4 +42,14 @@ func Start() error {
 	}
 
 	return nil
+}
+
+func FormatPostgresDate(dateStr string) (string, error) {
+	t, err := time.Parse("2006-01-02T15:04:05Z", dateStr)
+	if err != nil {
+		return "", err
+	}
+
+	formatted := t.Format("2 January 2006")
+	return formatted, nil
 }

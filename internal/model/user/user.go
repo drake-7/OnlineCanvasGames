@@ -10,6 +10,7 @@ import (
 type User struct {
 	ID   int
 	Name string
+	Date string
 }
 
 var (
@@ -51,7 +52,7 @@ func UserAndHashByName(username string) (*User, string, error) {
 	user := &User{Name: username}
 	var hash string
 
-	err := database.DB.QueryRow("SELECT id, hash FROM users WHERE name = $1", username).Scan(&user.ID, &hash)
+	err := database.DB.QueryRow("SELECT id, date, hash FROM users WHERE name = $1", username).Scan(&user.ID, &user.Date, &hash)
 	if err != nil {
 		return nil, "", err
 	}
@@ -62,7 +63,7 @@ func UserAndHashByName(username string) (*User, string, error) {
 func ByID(userID int) (*User, error) {
 	user := &User{ID: userID}
 
-	err := database.DB.QueryRow("SELECT name FROM users WHERE id = $1", userID).Scan(&user.Name)
+	err := database.DB.QueryRow("SELECT name, date FROM users WHERE id = $1", userID).Scan(&user.Name, &user.Date)
 	if err != nil {
 		return nil, err
 	}

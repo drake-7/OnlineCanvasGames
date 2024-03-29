@@ -18,9 +18,9 @@
 - [X] Responsive design
 - [X] Favicon
 
-- [ ] Profile page
-    - [ ] Frontend
-    - [ ] Backend
+- [X] Profile page
+    - [X] Frontend
+    - [X] Backend
 
 - [ ] Gameplay page
     - [ ] Frontend
