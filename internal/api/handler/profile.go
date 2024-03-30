@@ -23,7 +23,7 @@ func ProfilePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := usermodel.ByID(id)
+	user, err := usermodel.GetByID(id)
 	if err != nil {
 		NotFound(w, r)
 		return

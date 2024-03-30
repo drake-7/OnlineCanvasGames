@@ -24,7 +24,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// games count
-	data.Games, err = gamemodel.All()
+	data.Games, err = gamemodel.GetAll()
 	if err != nil {
 		data.Games = nil
 		log.Println("error getting games:", err)

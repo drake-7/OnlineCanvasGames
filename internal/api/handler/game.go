@@ -25,7 +25,7 @@ func GamePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data.Game.ID = id
-	data.Game, err = gamemodel.ByID(id)
+	data.Game, err = gamemodel.GetByID(id)
 
 	if err != nil {
 		switch err {

@@ -61,14 +61,14 @@ func AuthPost(w http.ResponseWriter, r *http.Request) {
 	var user *usermodel.User
 	switch userInput.Type {
 	case "login":
-		user, err = usermodel.Login(userInput.Username, userInput.Password)
+		user, err = usermodel.GetByNameAndPassword(userInput.Username, userInput.Password)
 	case "register":
-		user, err = usermodel.Register(userInput.Username, userInput.Password)
+		user, err = usermodel.Insert(userInput.Username, userInput.Password)
 	}
 
 	if err != nil {
 		switch err {
-		case usermodel.ErrUserWrong:
+		case usermodel.ErrNoSuchUser:
 			http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
 		case usermodel.ErrUserExists:
 			http.Error(w, fmt.Sprintf("%s already exists", userInput.Username), http.StatusUnauthorized)

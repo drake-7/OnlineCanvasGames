@@ -9,7 +9,7 @@ type Game struct {
 	Title string
 }
 
-func All() ([]Game, error) {
+func GetAll() ([]Game, error) {
 	rows, err := database.DB.Query("SELECT id, title FROM games")
 	if err != nil {
 		return nil, err
@@ -32,7 +32,7 @@ func All() ([]Game, error) {
 	return games, nil
 }
 
-func ByID(id int) (*Game, error) {
+func GetByID(id int) (*Game, error) {
 	var game = &Game{
 		ID: id,
 	}
