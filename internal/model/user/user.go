@@ -32,10 +32,10 @@ func GetByID(userID int) (*User, error) {
 }
 
 func GetByNameAndPassword(username, password string) (*User, error) {
-	user := &User{Name: username}
+	user := &User{}
 	var hash string
 
-	err := database.DB.QueryRow("SELECT id, date, hash FROM users WHERE name = $1", username).Scan(&user.ID, &user.Date, &hash)
+	err := database.DB.QueryRow("SELECT id, name, date, hash FROM users WHERE LOWER(name) = LOWER($1)", username).Scan(&user.ID, &user.Name, &user.Date, &hash)
 
 	if err != nil {
 		switch err {
@@ -57,7 +57,7 @@ func Insert(username, password string) (*User, error) {
 	// check existance
 	var exists bool
 
-	err := database.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE name = $1)", username).Scan(&exists)
+	err := database.DB.QueryRow("SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(name) = LOWER($1))", username).Scan(&exists)
 	if err != nil {
 		return nil, err
 	}
