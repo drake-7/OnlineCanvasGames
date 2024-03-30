@@ -37,8 +37,9 @@ func NewRouter() http.Handler {
 		// Get
 		r.Get("/", page.HandleHome)
 		r.Get("/auth", page.HandleAuth)
-		r.Get("/game/{id}", page.HandleGame)
 		r.Get("/profile/{id}", page.HandleProfile)
+		r.Get("/game/{id}", page.HandleGame)
+		r.Get("/game/{id}/play", page.HandleGameplay)
 
 		r.Get("/*", page.HandleNotFound)
 	})
