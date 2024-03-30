@@ -10,7 +10,7 @@ function postInput(type){
         type: type
     }
 
-    fetch ("/api/userauth", {
+    fetch ("/api/user", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -18,13 +18,10 @@ function postInput(type){
         body: JSON.stringify(inputData)
     })
     .then (response => {
-        response.text().then(data => $("#info").html(data))
+        response.json().then(data => $("#info").html(data.message))
         if(response.status == 200){
             window.location.replace("/")
         }
-    })
-    .catch (error => {
-        console.error(error)
     })
 }
 
