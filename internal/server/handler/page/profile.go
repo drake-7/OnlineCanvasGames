@@ -1,4 +1,4 @@
-package handler
+package page
 
 import (
 	"net/http"
@@ -6,7 +6,6 @@ import (
 
 	"github.com/1001bit/OnlineCanvasGames/internal/database"
 	usermodel "github.com/1001bit/OnlineCanvasGames/internal/model/user"
-	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
 type ProfileData struct {
@@ -14,27 +13,27 @@ type ProfileData struct {
 	Date     string
 }
 
-func ProfilePage(w http.ResponseWriter, r *http.Request) {
+func HandleProfile(w http.ResponseWriter, r *http.Request) {
 	data := ProfileData{}
 
 	id, err := strconv.Atoi(r.PathValue("id"))
 	if err != nil {
-		NotFound(w, r)
+		HandleNotFound(w, r)
 		return
 	}
 
 	user, err := usermodel.GetByID(id)
 	if err != nil {
-		NotFound(w, r)
+		HandleNotFound(w, r)
 		return
 	}
 
 	data.Username = user.Name
 	data.Date, err = database.FormatPostgresDate(user.Date)
 	if err != nil {
-		ServerError(w, r)
+		HandleServerError(w, r)
 		return
 	}
 
-	tmplloader.ExecuteTemplate(w, r, "profile.html", data)
+	serveTemplate("profile.html", data, w, r)
 }

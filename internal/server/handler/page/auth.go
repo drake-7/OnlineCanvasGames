@@ -1,13 +1,12 @@
-package handler
+package page
 
 import (
 	"net/http"
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
-	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
-func AuthPage(w http.ResponseWriter, r *http.Request) {
+func HandleAuth(w http.ResponseWriter, r *http.Request) {
 	// only unauthorized may see this page
 	_, err := auth.JWTClaimsByCookie(r)
 	if err == nil {
@@ -15,5 +14,5 @@ func AuthPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmplloader.ExecuteTemplate(w, r, "auth.html", nil)
+	serveTemplate("auth.html", nil, w, r)
 }

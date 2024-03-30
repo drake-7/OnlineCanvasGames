@@ -1,4 +1,4 @@
-package handler
+package page
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
 	gamemodel "github.com/1001bit/OnlineCanvasGames/internal/model/game"
-	"github.com/1001bit/OnlineCanvasGames/internal/tmplloader"
 )
 
 type HomeData struct {
@@ -15,7 +14,7 @@ type HomeData struct {
 	Games    []gamemodel.Game
 }
 
-func HomePage(w http.ResponseWriter, r *http.Request) {
+func HandleHome(w http.ResponseWriter, r *http.Request) {
 	data := HomeData{}
 
 	claims, err := auth.JWTClaimsByCookie(r)
@@ -30,5 +29,5 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		log.Println("error getting games:", err)
 	}
 
-	tmplloader.ExecuteTemplate(w, r, "home.html", data)
+	serveTemplate("home.html", data, w, r)
 }

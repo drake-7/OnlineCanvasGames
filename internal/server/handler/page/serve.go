@@ -1,4 +1,4 @@
-package tmplloader
+package page
 
 import (
 	"fmt"
@@ -20,7 +20,7 @@ type TemplateData struct {
 
 var templates = template.Must(template.ParseGlob("web/templates/**/*.html"))
 
-func ExecuteTemplate(w http.ResponseWriter, r *http.Request, file string, data any) {
+func serveTemplate(file string, data any, w http.ResponseWriter, r *http.Request) {
 	tmplData := TemplateData{
 		Data: data,
 	}

@@ -1,4 +1,4 @@
-package handler
+package storage
 
 import (
 	"net/http"
@@ -9,7 +9,7 @@ const imageStoragePath = "./web/image"
 
 var imageFormats = [...]string{"png", "jpg", "jpeg"}
 
-func ImageStorage(w http.ResponseWriter, r *http.Request) {
+func HandleImage(w http.ResponseWriter, r *http.Request) {
 	fileServer := http.FileServer(http.Dir(imageStoragePath))
 
 	// check if file.png, file.jpg, etc. exists and use it

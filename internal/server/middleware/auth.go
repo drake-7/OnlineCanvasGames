@@ -3,16 +3,24 @@ package middleware
 import (
 	"net/http"
 
-	"github.com/1001bit/OnlineCanvasGames/internal/api/handler"
 	"github.com/1001bit/OnlineCanvasGames/internal/auth"
+	"github.com/1001bit/OnlineCanvasGames/internal/server/handler/api"
+	"github.com/1001bit/OnlineCanvasGames/internal/server/handler/page"
 )
 
+type MessageJSON struct {
+	message string
+}
+
 // plain text for unauthorized
-func Auth(next http.Handler) http.Handler {
+func AuthJSON(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, err := auth.JWTClaimsByCookie(r)
 		if err != nil {
-			handler.Unauthorized(w, r)
+			message := MessageJSON{
+				message: "unauthorized",
+			}
+			api.ServeJSON(message, http.StatusUnauthorized, w)
 			return
 		}
 
@@ -25,7 +33,7 @@ func AuthHTML(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		_, err := auth.JWTClaimsByCookie(r)
 		if err != nil {
-			handler.AuthPage(w, r)
+			page.HandleAuth(w, r)
 			return
 		}
 
