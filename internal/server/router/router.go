@@ -20,12 +20,15 @@ func NewRouter() http.Handler {
 
 	// Storage
 	router.Handle("/static/*", http.StripPrefix("/static", http.HandlerFunc(storage.HandleStatic)))
-	router.HandleFunc("/favicon.ico", storage.HandleStatic)
+	router.Get("/favicon.ico", storage.HandleStatic)
 	router.Handle("/image/*", http.StripPrefix("/image", http.HandlerFunc(storage.HandleImage)))
 
 	// Websockets
-	gameplayWS := socket.NewGameplayWS()
-	http.HandleFunc("/ws/gameplay", gameplayWS.ServeHTTP)
+	gameplayHub := socket.NewGameplayHub()
+	go gameplayHub.Run()
+	router.HandleFunc("/ws/gameplay", func(w http.ResponseWriter, r *http.Request) {
+		socket.ServeWS(gameplayHub, w, r)
+	})
 
 	// API
 	router.Route("/api", func(r chi.Router) {
