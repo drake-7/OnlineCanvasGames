@@ -16,7 +16,7 @@
             <img src="/image/gamethumbnail/{{ .Data.Game.ID }}">
         </div>
         <h1>{{ .Data.Game.Title }}</h1>
-        <button class="style-button physical big-font">Play</button>
+        <a href="/game/{{ .Data.Game.ID }}/play"><button class="style-button physical big-font">Play</button></a>
     </div>
     
     </main>

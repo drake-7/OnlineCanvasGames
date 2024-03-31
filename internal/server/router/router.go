@@ -5,6 +5,7 @@ import (
 
 	"github.com/1001bit/OnlineCanvasGames/internal/server/handler/api"
 	"github.com/1001bit/OnlineCanvasGames/internal/server/handler/page"
+	"github.com/1001bit/OnlineCanvasGames/internal/server/handler/socket"
 	"github.com/1001bit/OnlineCanvasGames/internal/server/handler/storage"
 	"github.com/1001bit/OnlineCanvasGames/internal/server/middleware"
 
@@ -22,7 +23,11 @@ func NewRouter() http.Handler {
 	router.HandleFunc("/favicon.ico", storage.HandleStatic)
 	router.Handle("/image/*", http.StripPrefix("/image", http.HandlerFunc(storage.HandleImage)))
 
-	// api
+	// Websockets
+	gameplayWS := socket.NewGameplayWS()
+	http.HandleFunc("/ws/gameplay", gameplayWS.ServeHTTP)
+
+	// API
 	router.Route("/api", func(r chi.Router) {
 		r.Use(middleware.TypeJSON)
 
@@ -30,7 +35,7 @@ func NewRouter() http.Handler {
 		r.Post("/user", api.HandleUserPost)
 	})
 
-	// pages
+	// HTML Pages
 	router.Route("/", func(r chi.Router) {
 		r.Use(middleware.TypeHTML)
 
