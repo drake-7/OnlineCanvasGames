@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	writeWait  = 10 * time.Second
-	pongWait   = 60 * time.Second
+	writeWait = 10 * time.Second
+	pongWait  = 60 * time.Second
+	// must be shorter that pong wait, because ping should be sent before, than read deadline happens
 	pingPeriod = pongWait * 9 / 10
 )
 
@@ -27,6 +28,8 @@ var upgrader = websocket.Upgrader{
 type Client struct {
 	conn *websocket.Conn
 	hub  *GameplayHub
+
+	write chan []byte
 }
 
 func (c *Client) readPump() {
@@ -63,11 +66,36 @@ func (c *Client) writePump() {
 	}()
 
 	for {
-		<-ticker.C
-		c.conn.SetWriteDeadline(time.Now().Add(writeWait))
-		// Ping
-		if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
-			return
+		select {
+		case <-ticker.C:
+			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			// Ping
+			if err := c.conn.WriteMessage(websocket.PingMessage, nil); err != nil {
+				return
+			}
+		case message, ok := <-c.write:
+			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			// if hub closed c.write chan
+			if !ok {
+				c.conn.WriteMessage(websocket.CloseMessage, []byte("closed!"))
+				return
+			}
+
+			w, err := c.conn.NextWriter(websocket.TextMessage)
+			if err != nil {
+				return
+			}
+			w.Write(message)
+			log.Println("sent to client:", string(message))
+
+			n := len(c.write)
+			for i := 0; i < n; i++ {
+				w.Write(<-c.write)
+			}
+
+			if err := w.Close(); err != nil {
+				return
+			}
 		}
 	}
 }

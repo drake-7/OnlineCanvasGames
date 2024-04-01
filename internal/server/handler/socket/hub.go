@@ -21,8 +21,9 @@ func ServeWS(hub *GameplayHub, w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &Client{
-		conn: conn,
-		hub:  hub,
+		conn:  conn,
+		hub:   hub,
+		write: make(chan []byte),
 	}
 	client.hub.connect <- client
 
@@ -48,11 +49,20 @@ func (hub *GameplayHub) Run() {
 		case client := <-hub.disconnect:
 			delete(hub.clients, client)
 		case message := <-hub.messageChan:
-			handleMessage(message)
+			hub.handleMessage(message)
 		}
 	}
 }
 
-func handleMessage(message []byte) {
-	log.Println(string(message))
+func (hub *GameplayHub) handleMessage(message []byte) {
+	for client := range hub.clients {
+		select {
+		case client.write <- append([]byte("someone said "), message...):
+			// if there is client.write waiting, unblock the select
+		default:
+			close(client.write)
+			delete(hub.clients, client)
+		}
+	}
+	log.Println("got from client:", string(message))
 }

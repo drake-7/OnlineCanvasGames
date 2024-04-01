@@ -24,6 +24,7 @@ func NewRouter() http.Handler {
 	router.Handle("/image/*", http.StripPrefix("/image", http.HandlerFunc(storage.HandleImage)))
 
 	// Websockets
+	// TODO: Do dynamic hubs for games
 	gameplayHub := socket.NewGameplayHub()
 	go gameplayHub.Run()
 	router.HandleFunc("/ws/gameplay", func(w http.ResponseWriter, r *http.Request) {
