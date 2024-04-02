@@ -25,7 +25,8 @@
 - [ ] Gameplay page
     - [ ] Frontend
     - [ ] Backend
-        - [ ] Socket connection
+
+- [ ] Websocket
 
 - [ ] Some kind of game engine
 
