@@ -10,7 +10,7 @@
     {{ template "header" .Header }}
     <main>
 
-    <canvas id="game-canvas" width="200" height="300"></canvas>
+    <canvas id="game-canvas" data-game-id="{{ .Data.Game.ID }}" width="200" height="300"></canvas>
     
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
