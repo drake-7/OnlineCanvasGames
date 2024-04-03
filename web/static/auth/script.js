@@ -20,7 +20,7 @@ function postInput(type){
     .then (response => {
         response.json().then(data => $("#info").html(data.message))
         if(response.status == 200){
-            window.location.replace("/")
+            window.location.reload()
         }
     })
 }
