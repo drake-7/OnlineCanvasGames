@@ -1,68 +1,33 @@
 package socket
 
-import (
-	"log"
-	"net/http"
-)
+import "log"
 
-type GameplayHub struct {
+type GameHub struct {
+	rooms   map[*GameRoom]bool
 	clients map[*Client]bool
 
-	connect     chan *Client
-	disconnect  chan *Client
-	messageChan chan []byte
+	connect    chan *Client
+	disconnect chan *Client
 }
 
-func ServeWS(hub *GameplayHub, w http.ResponseWriter, r *http.Request) {
-	conn, err := upgrader.Upgrade(w, r, nil)
-	if err != nil {
-		log.Println("error upgrading connection:", err)
-		return
-	}
-
-	client := &Client{
-		conn:  conn,
-		hub:   hub,
-		write: make(chan []byte),
-	}
-	client.hub.connect <- client
-
-	go client.readPump()
-	go client.writePump()
-}
-
-func NewGameplayHub() *GameplayHub {
-	return &GameplayHub{
+func NewGameHub() *GameHub {
+	return &GameHub{
+		rooms:   make(map[*GameRoom]bool),
 		clients: make(map[*Client]bool),
 
-		connect:     make(chan *Client),
-		disconnect:  make(chan *Client),
-		messageChan: make(chan []byte),
+		connect:    make(chan *Client),
+		disconnect: make(chan *Client),
 	}
 }
 
-func (hub *GameplayHub) Run() {
+func (hub *GameHub) Run() {
 	for {
 		select {
 		case client := <-hub.connect:
+			log.Println("<GameHub Connect>")
 			hub.clients[client] = true
 		case client := <-hub.disconnect:
 			delete(hub.clients, client)
-		case message := <-hub.messageChan:
-			hub.handleMessage(message)
 		}
 	}
-}
-
-func (hub *GameplayHub) handleMessage(message []byte) {
-	for client := range hub.clients {
-		select {
-		case client.write <- append([]byte("someone said "), message...):
-			// if there is client.write waiting, unblock the select
-		default:
-			close(client.write)
-			delete(hub.clients, client)
-		}
-	}
-	log.Println("got from client:", string(message))
 }

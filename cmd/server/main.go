@@ -25,7 +25,10 @@ func main() {
 	defer database.DB.Close()
 
 	// start http server
-	router := router.NewRouter()
+	router, err := router.NewRouter()
+	if err != nil {
+		log.Fatal("err creating router:", err)
+	}
 
 	port := 8080
 	addr := fmt.Sprintf("localhost:%d", port)

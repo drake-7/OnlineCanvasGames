@@ -13,7 +13,7 @@ import (
 	chimw "github.com/go-chi/chi/v5/middleware"
 )
 
-func NewRouter() http.Handler {
+func NewRouter() (http.Handler, error) {
 	router := chi.NewRouter()
 	router.Use(chimw.Logger)
 	router.Use(chimw.RedirectSlashes)
@@ -24,11 +24,13 @@ func NewRouter() http.Handler {
 	router.Handle("/image/*", http.StripPrefix("/image", http.HandlerFunc(storage.HandleImage)))
 
 	// Websockets
-	// TODO: Do dynamic hubs for games
-	gameplayHub := socket.NewGameplayHub()
-	go gameplayHub.Run()
-	router.HandleFunc("/ws/gameplay", func(w http.ResponseWriter, r *http.Request) {
-		socket.ServeWS(gameplayHub, w, r)
+	gamesWS, err := socket.NewGamesWS()
+	if err != nil {
+		return nil, err
+	}
+	go gamesWS.Run()
+	router.HandleFunc("/ws/gameplay/{id}", func(w http.ResponseWriter, r *http.Request) {
+		socket.ServeWS(gamesWS, w, r)
 	})
 
 	// API
@@ -53,5 +55,5 @@ func NewRouter() http.Handler {
 		r.Get("/*", page.HandleNotFound)
 	})
 
-	return router
+	return router, nil
 }

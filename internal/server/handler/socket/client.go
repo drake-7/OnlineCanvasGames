@@ -2,7 +2,6 @@ package socket
 
 import (
 	"log"
-	"net/http"
 	"time"
 
 	"github.com/gorilla/websocket"
@@ -15,26 +14,25 @@ const (
 	pingPeriod = pongWait * 9 / 10
 )
 
-// Upgrader
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin: func(r *http.Request) bool {
-		return true
-	},
-}
-
 // Client
 type Client struct {
 	conn *websocket.Conn
-	hub  *GameplayHub
+	ws   *GamesWS
 
 	write chan []byte
 }
 
+func NewClient(conn *websocket.Conn, ws *GamesWS) *Client {
+	return &Client{
+		conn:  conn,
+		ws:    ws,
+		write: make(chan []byte),
+	}
+}
+
 func (c *Client) readPump() {
 	defer func() {
-		c.hub.disconnect <- c
+		c.ws.disconnect <- c
 		c.conn.Close()
 	}()
 
@@ -54,7 +52,7 @@ func (c *Client) readPump() {
 			}
 			break
 		}
-		c.hub.messageChan <- message
+		c.ws.messageChan <- message
 	}
 }
 
@@ -86,7 +84,7 @@ func (c *Client) writePump() {
 				return
 			}
 			w.Write(message)
-			log.Println("sent to client:", string(message))
+			log.Println("<Client Write>:", string(message))
 
 			n := len(c.write)
 			for i := 0; i < n; i++ {
