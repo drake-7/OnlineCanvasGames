@@ -29,8 +29,11 @@ func NewRouter() (http.Handler, error) {
 		return nil, err
 	}
 	go gamesWS.Run()
-	router.HandleFunc("/ws/gameplay/{id}", func(w http.ResponseWriter, r *http.Request) {
-		socket.ServeWS(gamesWS, w, r)
+	// Websockets Secure
+	router.Route("/ws", func(rs chi.Router) {
+		rs.Use(middleware.AuthJSON)
+
+		rs.HandleFunc("/gameplay/{id}", gamesWS.ServeWS)
 	})
 
 	// API
@@ -50,10 +53,12 @@ func NewRouter() (http.Handler, error) {
 		r.Get("/auth", page.HandleAuth)
 		r.Get("/profile/{id}", page.HandleProfile)
 		r.Get("/game/{id}", page.HandleGame)
-		r.Group(func(sr chi.Router) {
-			sr.Use(middleware.AuthHTML)
-			sr.Get("/game/{id}/play", page.HandleGameplay)
+		// Secure
+		r.Group(func(rs chi.Router) {
+			rs.Use(middleware.AuthHTML)
+			rs.Get("/game/{id}/play", page.HandleGameplay)
 		})
+
 		r.Get("/*", page.HandleNotFound)
 	})
 

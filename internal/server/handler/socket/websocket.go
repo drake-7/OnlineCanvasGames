@@ -49,7 +49,7 @@ func NewGamesWS() (*GamesWS, error) {
 	}, nil
 }
 
-func ServeWS(ws *GamesWS, w http.ResponseWriter, r *http.Request) {
+func (ws *GamesWS) ServeWS(w http.ResponseWriter, r *http.Request) {
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Println("error upgrading connection:", err)
