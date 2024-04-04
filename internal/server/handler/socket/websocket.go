@@ -69,9 +69,8 @@ func (ws *GamesWS) ServeWS(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	client := NewClient(conn, ws)
+	client := NewClient(conn, ws, hub)
 	ws.connect <- client
-	hub.connect <- client
 
 	go client.readPump()
 	go client.writePump()
@@ -81,10 +80,15 @@ func (ws *GamesWS) Run() {
 	for {
 		select {
 		case client := <-ws.connect:
-			log.Println("<GameWS Connect>")
+			client.hub.connect <- client
 			ws.clients[client] = true
+			log.Println("<GameWS Connect>")
+
 		case client := <-ws.disconnect:
+			client.hub.disconnect <- client
 			delete(ws.clients, client)
+			log.Println("<GameWS Disconnect>")
+
 		case message := <-ws.messageChan:
 			ws.handleMessage(message)
 		}

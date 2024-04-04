@@ -24,10 +24,12 @@ func (hub *GameHub) Run() {
 	for {
 		select {
 		case client := <-hub.connect:
-			log.Println("<GameHub Connect>")
 			hub.clients[client] = true
+			log.Println("<GameHub Connect>")
+
 		case client := <-hub.disconnect:
 			delete(hub.clients, client)
+			log.Println("<GameHub Disonnect>")
 		}
 	}
 }

@@ -18,14 +18,17 @@ const (
 type Client struct {
 	conn *websocket.Conn
 	ws   *GamesWS
+	hub  *GameHub
 
 	write chan []byte
 }
 
-func NewClient(conn *websocket.Conn, ws *GamesWS) *Client {
+func NewClient(conn *websocket.Conn, ws *GamesWS, hub *GameHub) *Client {
 	return &Client{
-		conn:  conn,
-		ws:    ws,
+		conn: conn,
+		ws:   ws,
+		hub:  hub,
+
 		write: make(chan []byte),
 	}
 }
